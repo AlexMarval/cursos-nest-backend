@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 
 @Injectable()
 export class CarsService {
@@ -28,9 +28,8 @@ export class CarsService {
     findOneById(id: number){
         const car = this.cars.find(item => item.id === id)
         
-        if(car != null)
-            return car;
-        else
-            return new BadRequestException();
+        if(!car) throw new NotFoundException(`Car with id: ${id} not found`);
+
+        return car;
     }
 }
