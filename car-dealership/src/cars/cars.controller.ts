@@ -1,22 +1,18 @@
 import { Controller, Get, Param } from '@nestjs/common';
+import { CarsService } from './cars.service';
 
 @Controller('cars')
 export class CarsController {
 
-    private cars = ['Toyota', 'Honda', 'Jeep'];
+    constructor(private readonly carsService: CarsService) { }
 
     @Get()
     getAllCars(){
-        return this.cars;
+        return this.carsService.findAll();
     }
 
     @Get(':id')
     getCarById( @Param('id') id: string) {
-        console.log({ id: +id })
-
-        if((+id + 1) == null ) return { id: null, message: "id is not a number" }
-        if(this.cars.length < +id) return { id: null, message: "id not exist" };
-        
-        return this.cars[+id];
+        return this.carsService.findOneById( +id )
     }
 }

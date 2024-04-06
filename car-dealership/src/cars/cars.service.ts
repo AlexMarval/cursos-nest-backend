@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class CarsService {
@@ -20,4 +20,17 @@ export class CarsService {
             model: 'Cherokee'
         },
     ];
+
+    findAll() {
+        return this.cars;
+    }
+
+    findOneById(id: number){
+        const car = this.cars.find(item => item.id === id)
+        
+        if(car != null)
+            return car;
+        else
+            return new BadRequestException();
+    }
 }
