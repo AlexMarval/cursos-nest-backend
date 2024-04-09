@@ -18,7 +18,6 @@ export class CarsController {
     }
 
     @Post()
-    @UsePipes(ValidationPipe)
     createCar(@Body() crateCarDto: CreateCarDto) {
         return crateCarDto;
     }
