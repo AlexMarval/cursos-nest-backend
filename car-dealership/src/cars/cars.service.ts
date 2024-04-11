@@ -5,34 +5,33 @@ import { Car } from './interface/car.interface';
 
 @Injectable()
 export class CarsService {
+  private cars: Car[] = [
+    {
+      id: uuid(),
+      brand: 'Toyota',
+      model: 'Corrolla',
+    },
+    {
+      id: uuid(),
+      brand: 'Honda',
+      model: 'Civic',
+    },
+    {
+      id: uuid(),
+      brand: 'Jeep',
+      model: 'Cherokee',
+    },
+  ];
 
-    private cars: Car[] = [
-        {
-            id: uuid(),
-            brand: 'Toyota',
-            model: 'Corrolla'
-        },
-        {
-            id: uuid(),
-            brand: 'Honda',
-            model: 'Civic'
-        },
-        {
-            id: uuid(),
-            brand: 'Jeep',
-            model: 'Cherokee'
-        },
-    ];
+  findAll() {
+    return this.cars;
+  }
 
-    findAll() {
-        return this.cars;
-    }
+  findOneById(id: string) {
+    const car = this.cars.find((item) => item.id === id);
 
-    findOneById(id: string){
-        const car = this.cars.find(item => item.id === id)
-        
-        if(!car) throw new NotFoundException(`Car with id: ${id} not found`);
+    if (!car) throw new NotFoundException(`Car with id: ${id} not found`);
 
-        return car;
-    }
+    return car;
+  }
 }
