@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
 
 import { Car } from './interface/car.interface';
@@ -48,6 +48,19 @@ export class CarsService {
   }
 
   update(id: string, updateCarDto: UpdateCarDto) {
-    const car = this.cars.filter(c => c.id === id)
+    let carDB = this.findOneById(id);
+
+    if(updateCarDto && updateCarDto.id !== id) 
+        throw new BadRequestException('Car id is not valid inside body');
+
+    this.cars = this.cars.map((car) => {
+      if (car.id === id) {
+        carDB = { ...carDB, ...updateCarDto, id };
+        return carDB;
+      }
+      return car;
+    });
+
+    return carDB;
   }
 }
