@@ -4,7 +4,6 @@ import { Brand } from './entities/brand.entity';
 
 import { CreateBrandDto } from './dto/create-brand.dto';
 import { UpdateBrandDto } from './dto/update-brand.dto';
-import { create } from 'domain';
 
 @Injectable()
 export class BrandsService {
@@ -14,7 +13,7 @@ export class BrandsService {
       name: 'Toyota',
       createAt: new Date().getTime()
     } */
-]
+  ];
 
   create(createBrandDto: CreateBrandDto) {
     const { name } = createBrandDto;
@@ -22,8 +21,8 @@ export class BrandsService {
     const brand: Brand = {
       id: uuid(),
       name: name.toLocaleLowerCase(),
-      createAt: new Date().getTime()
-    }
+      createAt: new Date().getTime(),
+    };
 
     this.brands.push(brand);
 
@@ -35,26 +34,29 @@ export class BrandsService {
   }
 
   findOne(id: string) {
-    const brand = this.brands.find(brand => brand.id === id);
-    if(!brand) throw new NotFoundException('Brand is not exits')
+    const brand = this.brands.find((brand) => brand.id === id);
+    if (!brand) throw new NotFoundException('Brand is not exits');
     return brand;
   }
 
   update(id: string, updateBrandDto: UpdateBrandDto) {
-
     let brandDB = this.findOne(id);
 
-    this.brands = this.brands.map(brand => {
-      if(brand.id === id){
+    this.brands = this.brands.map((brand) => {
+      if (brand.id === id) {
         brandDB.updateAt = new Date().getTime();
-        brandDB = {...brandDB, ...updateBrandDto};
+        brandDB = { ...brandDB, ...updateBrandDto };
         return brandDB;
       }
-      return brand
+      return brand;
     });
   }
 
   remove(id: string) {
-    this.brands = this.brands.filter((brand) => brand.id !== id );
+    this.brands = this.brands.filter((brand) => brand.id !== id);
+  }
+
+  fillBrandsWithSeedData(brand: Brand[]) {
+    this.brands = brand;
   }
 }
